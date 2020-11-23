@@ -1,0 +1,10 @@
+<%- include('./partials/header') %> 
+
+<form class="flex flex-col items-center justify-center" action="/create-message" method="POST">
+    <label class="text-yellow-500" for="title">Title:</label>
+    <input name="title" placeholder="Title" type="text"/>
+    <label class="text-yellow-500" for="body">Body:</label>
+    <textarea name="body" id="body" cols="30" rows="10"></textarea>
+    <button class="bg-yellow-500">Post</button>
+  </form>
+<%- include('./partials/footer') %> 

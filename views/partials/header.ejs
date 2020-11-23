@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="tailwind.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>The Clubhouse</title>
+</head>
+<body>
+    <div class="flex flex-col items-center min-h-screen">
+        <header class="w-full flex flex-row items-center justify-between  bg-black h-12 p-1 border-yellow-400 border-b-2">
+            <h1 class="text-yellow-400 float-left">
+                <a href="/">
+                    The Clubhouse
+                </a>
+            </h1>
+            <nav class="float-right">
+                <% if (!currentUser) { %>
+                    <form action="/" method="POST">
+                        <label for="username" class="text-yellow-400">
+                            Username
+                            <input class="text-gray-500" type="email" name="username" id="username" placeholder="Enter your email...">
+                        </label>
+                        <label for="password" class="text-yellow-400">
+                            Password
+                            <input class="text-gray-500" type="password" name="password" id="password" placeholder="Enter your password...">
+                        </label>
+                        <button type="submit" class="bg-yellow-400">
+                            Log In
+                        </button>
+                    </form>
+
+                    <a class="text-yellow-400" href="/sign-up"> 
+                        Sign Up
+                    </a>  
+                <% } else if (currentUser) { %>
+                    <% if (!currentUser.membership) { %>
+                        <button class="bg-yellow-400 p-1">
+                            <a href="/join">
+                                Join The Club
+                             </a>
+                        </button>
+                    <% } %>
+                <a class="text-yellow-400" href="/logout">Log Out</a>  
+                 <% } %> 
+            </nav>
+        </header>
