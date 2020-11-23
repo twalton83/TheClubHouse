@@ -12,8 +12,7 @@ const User = require('./models/user')
 const Post = require('./models/post')
 const postController = require('./controllers/postController')
 
-const mongoDb =
-  "mongodb+srv://twalton:Ccv6v8PoWYiDD6A2@cluster0.f8krf.mongodb.net/<dbname>?retryWrites=true&w=majority";
+const mongoDb = process.env.MONGO_URI
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
@@ -57,7 +56,7 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true}));
+app.use(session({ secret: process.env.SECRET, resave: false, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
