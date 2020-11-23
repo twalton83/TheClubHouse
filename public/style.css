@@ -6,4 +6,5 @@ body {
   /* background by SVGBackgrounds.com */
   background-color: #000000;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 100 100'%3E%3Cg stroke='%2391cc66' stroke-width='0' %3E%3Crect fill='%23262626' x='-60' y='-60' width='150' height='240'/%3E%3C/g%3E%3C/svg%3E");
+  font-family: 'Castoro', serif;
 }

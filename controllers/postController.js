@@ -7,14 +7,12 @@ exports.posts_get = function(req, res, next){
         if(err){
             return next(err)
         } else {
-            console.log(posts)
             res.render('index', {posts : posts})
         }
     })
 }
 
 exports.posts_post = function(req,res, next){
-    console.log(req)
     const post = new Post({
         title: req.body.title,
         body : req.body.body,
@@ -24,6 +22,16 @@ exports.posts_post = function(req,res, next){
       })
 }
 
-exports.posts_delete = function(req, res, next){
-    
+exports.posts_delete = async function(req, res, next){
+   const deleted = await Post.findByIdAndDelete(req.body.postId, (err)=>{
+       if(err){
+           res.send('404')
+       } else {
+        res.redirect('/')
+       }
+   })
 }
+
+exports.create_get = (req, res)=>{
+    res.render('create-message')
+  }

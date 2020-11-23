@@ -1,16 +1,13 @@
 const express = require("express");
-const path = require("path");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const { check, validationResult } = require("express-validator");
-const { match } = require("assert");
 require("dotenv").config();
 const User = require('./models/user')
-const Post = require('./models/post')
 const postController = require('./controllers/postController')
+const userController = require('./controllers/userController')
 
 const mongoDb = process.env.MONGO_URI
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
@@ -65,6 +62,13 @@ app.use(function (req, res, next) {
   next();
 });
 
+const authenticated = (req,res,next) =>{
+  req.isAuthenticated() ? next() : res.redirect('/')
+}
+const isAdmin = (req,res,next) => {
+  req.user.isAdmin ? next() : res.redirect("/")
+}
+
 app.get("/", postController.posts_get)
 app.post("/", 
   passport.authenticate("local", {
@@ -73,101 +77,23 @@ app.post("/",
   })
 )
 
-app.delete("/", postController.posts_delete)
+app.delete("/", isAdmin, postController.posts_delete)
 
-const authenticated = (req,res,next) =>{
-  req.isAuthenticated() ? next() : res.redirect('/')
-}
-const validation = [
-  check('username', 'Username must be an email address')
-  .exists()
-  .bail()
-  .isEmail()
-  .bail(),
-  check('password').isLength({min : 8})
-  .exists()
-  .withMessage('Password Must Be At Least 8 Characters')
-  .bail(),
-  check('passwordConf', 'Passwords don\'t match.')
-  .exists()
-  .custom((value, {req})=> value === req.body.password)
-]
-
-
-app.get("/sign-up", (req, res) => {
-  res.render("sign-up");
-});
-
-app.post("/sign-up", (req, res, next) => {
-  bcrypt.hash(req.body.password, 10, (err, hashedPass) => {
-    if (err){
-      res.redirect("/");
-    } else {
-      const user = new User({
-        username: req.body.username,
-        password: hashedPass,
-        membership: false,
-        firstName:  req.body.firstname,
-        lastName: req.body.lastname
-      }).save((err) => {
-        if (err) {
-          return next(err)
-        };
-        res.redirect("/");
-      });
-    }
-  });
-});
+app.get("/sign-up", userController.user_get);
+app.post("/sign-up", userController.signupValidation, userController.signup_post);
 
 app.get('/join', authenticated, (req, res)=>{
   res.render('join-the-club')
 })
-
-const joinValidation = [
-  check('secretPass')
-  .trim()
-  .escape()
-  .custom(value => {
-    return value === '867-5309' ? value : Promise.reject('Not the password')
-  })
-]
-app.post('/join', authenticated, joinValidation, (req, res, next)=>{
-    User.findByIdAndUpdate(req.user._id, { membership : true}, (err,result)=>{
-      if(err){
-        return next(err)
-      } else{
-        res.redirect("/")
-      }  
-  })
-})
+app.post('/join', authenticated, userController.joinValidation, userController.join_post)
 
 app.get('/admin', authenticated, (req, res)=>{
   res.render('admin')
 })
+app.post('/admin', authenticated, userController.adminValidation, userController.admin_post)
 
-const adminValidation = [
-  check('secretPass')
-  .trim()
-  .escape()
-  .custom(value => {
-    return value === '678-999-8212' ? value : Promise.reject('Not the password')
-  })
-]
-app.post('/admin', authenticated, adminValidation, (req, res, next)=>{
-    User.findByIdAndUpdate(req.user._id, { admin : true}, (err,result)=>{
-      if(err){
-        return next(err)
-      } else{
-        res.redirect("/")
-      }  
-  })
-})
-
-app.get('/create-message', authenticated, (req, res)=>{
-  res.render('create-message')
-})
-
-app.post('/create-message',authenticated, postController.posts_post)
+app.get('/create-message', authenticated, postController.create_get)
+app.post('/create-message', authenticated, postController.posts_post)
 
 app.get("/logout", (req, res) => {
   req.logout();
