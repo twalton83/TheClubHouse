@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="tailwind.css" rel="stylesheet">
+    <link href="tailwind_production.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&display=swap" rel="stylesheet">
@@ -38,6 +38,13 @@
                         <button class="bg-yellow-400 p-1">
                             <a href="/join">
                                 Join The Club
+                             </a>
+                        </button>
+                    <% } %>
+                    <% if (currentUser.membership && !currentUser.admin) { %>
+                        <button class="bg-yellow-400 p-1">
+                            <a href="/admin">
+                                Become An Admin
                              </a>
                         </button>
                     <% } %>

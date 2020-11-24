@@ -47,17 +47,20 @@ exports.signup_post = function(req, res, next){
     }
 }
 
-
 exports.joinValidation = [
-    check('secretPass')
+    check('secretPass', 'Not the secret password')
     .trim()
     .escape()
     .custom(value => {
-      return value === '867-5309' ? value : Promise.reject('Not the password')
+      return value === '867-5309'
     })
   ]
 
 exports.join_post = (req, res, next)=>{
+  const errors = validationResult(req)
+  if(!errors.isEmpty()){
+      res.status(400).json({errors: errors.array()})
+  } else {
     User.findByIdAndUpdate(req.user._id, { membership : true}, (err,result)=>{
       if(err){
         return next(err)
@@ -65,6 +68,7 @@ exports.join_post = (req, res, next)=>{
         res.redirect("/")
       }  
   })
+  }
 }
 
 exports.adminValidation = [
@@ -77,11 +81,16 @@ exports.adminValidation = [
   ]
 
 exports.admin_post = (req, res, next)=>{
+  const errors = validationResult(req)
+  if(!errors.isEmpty()){
+      res.status(400).json({errors: errors.array()})
+  } else {
     User.findByIdAndUpdate(req.user._id, { admin : true}, (err,result)=>{
       if(err){
         return next(err)
       } else{
         res.redirect("/")
       }  
-  })
+    })
+  }
 }

@@ -66,7 +66,8 @@ const authenticated = (req,res,next) =>{
   req.isAuthenticated() ? next() : res.redirect('/')
 }
 const isAdmin = (req,res,next) => {
-  req.user.isAdmin ? next() : res.redirect("/")
+  console.log(req.user.admin)
+  req.user.admin ? next() : res.redirect("/")
 }
 
 app.get("/", postController.posts_get)
@@ -76,8 +77,7 @@ app.post("/",
     failureRedirect: "/"
   })
 )
-
-app.delete("/", isAdmin, postController.posts_delete)
+app.get("/:post_id/delete", isAdmin, postController.posts_delete)
 
 app.get("/sign-up", userController.user_get);
 app.post("/sign-up", userController.signupValidation, userController.signup_post);

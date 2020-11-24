@@ -1,10 +1,13 @@
 <%- include('./partials/header') %> 
 
-<form class="flex flex-col items-center justify-center" action="/create-message" method="POST">
-    <label class="text-yellow-500" for="title">Title:</label>
-    <input name="title" placeholder="Title" type="text"/>
-    <label class="text-yellow-500" for="body">Body:</label>
-    <textarea name="body" id="body" cols="30" rows="10"></textarea>
-    <button class="bg-yellow-500">Post</button>
+<div class="container h-screen">
+  <form class="flex flex-col items-center justify-center h-3/4 w-3/4 mx-auto p-1" action="/create-message" method="POST">
+    <label class="text-yellow-500 w-full my-2" for="title">Title:</label>
+    <input class="w-full my-2" name="title" placeholder="Title" type="text"/>
+    <label class="w-full text-yellow-500 my-2" for="body">Body:</label>
+    <textarea class="w-full my-2" name="body" id="body" cols="30" rows="10"></textarea>
+    <button type="submit" class="bg-yellow-500 p-2 my-2 float-right">Post</button>
   </form>
+</div>
+
 <%- include('./partials/footer') %> 

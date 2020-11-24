@@ -1,4 +1,5 @@
 const Post = require('../models/post')
+const { body, validationResult } = require('express-validator');
 
 exports.posts_get = function(req, res, next){
     Post.find()
@@ -13,6 +14,10 @@ exports.posts_get = function(req, res, next){
 }
 
 exports.posts_post = function(req,res, next){
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        res.status(400).json({errors: errors.array()})
+    } else {
     const post = new Post({
         title: req.body.title,
         body : req.body.body,
@@ -20,12 +25,14 @@ exports.posts_post = function(req,res, next){
       }).save((err)=>{
         err ? next(err) : res.redirect("/")
       })
+    }
 }
 
 exports.posts_delete = async function(req, res, next){
-   const deleted = await Post.findByIdAndDelete(req.body.postId, (err)=>{
+console.log(req.params)
+   const deleted = await Post.findByIdAndDelete(req.params.post_id, (err)=>{
        if(err){
-           res.send('404')
+        res.json({success: false})
        } else {
         res.redirect('/')
        }
@@ -35,3 +42,10 @@ exports.posts_delete = async function(req, res, next){
 exports.create_get = (req, res)=>{
     res.render('create-message')
   }
+
+exports.post_validation = [
+    body('body')
+    .not().isEmpty()
+    .trim()
+    .escape(),
+]
