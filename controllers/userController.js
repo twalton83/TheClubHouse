@@ -12,9 +12,9 @@ exports.signupValidation = [
     .bail()
     .isEmail()
     .bail(),
-    check('password').isLength({min : 8})
+    check('password', 'Password must be at least 8 characters')
+    .isLength({min : 8})
     .exists()
-    .withMessage('Password Must Be At Least 8 Characters')
     .bail(),
     check('passwordConf', 'Passwords don\'t match.')
     .exists()
@@ -23,8 +23,9 @@ exports.signupValidation = [
   
 exports.signup_post = function(req, res, next){
     const errors = validationResult(req)
+    console.log(errors)
     if(!errors.isEmpty()){
-        res.status(400).json({errors: errors.array()})
+      res.render('sign-up', {errors: errors.array()})
     } else {
         bcrypt.hash(req.body.password, 10, (err, hashedPass) => {
             if (err){
@@ -59,7 +60,7 @@ exports.joinValidation = [
 exports.join_post = (req, res, next)=>{
   const errors = validationResult(req)
   if(!errors.isEmpty()){
-      res.status(400).json({errors: errors.array()})
+    res.render('join-the-club', {errors: errors.array()})
   } else {
     User.findByIdAndUpdate(req.user._id, { membership : true}, (err,result)=>{
       if(err){
@@ -83,7 +84,7 @@ exports.adminValidation = [
 exports.admin_post = (req, res, next)=>{
   const errors = validationResult(req)
   if(!errors.isEmpty()){
-      res.status(400).json({errors: errors.array()})
+    res.render('admin', {errors: errors.array()})
   } else {
     User.findByIdAndUpdate(req.user._id, { admin : true}, (err,result)=>{
       if(err){

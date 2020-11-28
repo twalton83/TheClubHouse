@@ -16,7 +16,7 @@ exports.posts_get = function(req, res, next){
 exports.posts_post = function(req,res, next){
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-        res.status(400).json({errors: errors.array()})
+        res.render('sign-up', {errors: errors.array()})
     } else {
     const post = new Post({
         title: req.body.title,
@@ -47,5 +47,5 @@ exports.post_validation = [
     body('body')
     .not().isEmpty()
     .trim()
-    .escape(),
+    .escape()
 ]

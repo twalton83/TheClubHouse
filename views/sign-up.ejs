@@ -1,5 +1,11 @@
 <%- include('./partials/header') %> 
-
+<% if (errors) { %>
+  <div class="mt-1 errors p-1">
+    <% errors.forEach(error => { %>
+      <p class="text-yellow-500"><%= error.msg %> </p>
+     <% }) %>
+  </div>
+ <% } %>
 <div class="bg-black shadow-md self-center justify-self-center mt-12 h-1/3 w-1/3">
     <h1 class="text-yellow-500 text-center" >Sign Up</h1>
     <form class="flex flex-col items-center justify-center" action="/sign-up" method="POST">

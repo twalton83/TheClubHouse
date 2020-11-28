@@ -18,6 +18,7 @@ const app = express();
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(express.json())
 
 passport.use(
   new LocalStrategy((username, password, done) => {
