@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 
 exports.user_get = (req, res) => {
-    res.render("sign-up")
+    res.render("sign-up", {errors: undefined})
 }
 
 exports.signupValidation = [

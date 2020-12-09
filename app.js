@@ -84,12 +84,12 @@ app.get("/sign-up", userController.user_get);
 app.post("/sign-up", userController.signupValidation, userController.signup_post);
 
 app.get('/join', authenticated, (req, res)=>{
-  res.render('join-the-club')
+  res.render('join-the-club', {errors: undefined})
 })
 app.post('/join', authenticated, userController.joinValidation, userController.join_post)
 
 app.get('/admin', authenticated, (req, res)=>{
-  res.render('admin')
+  res.render('admin', {errors: undefined})
 })
 app.post('/admin', authenticated, userController.adminValidation, userController.admin_post)
 

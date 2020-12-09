@@ -1,10 +1,10 @@
 <%- include('./partials/header') %> 
-<% if (typeof errors !== undefined) { %>
+<% if (errors) { %>
     <div class="mt-1 errors p-1">
         <ul>
             <% errors.forEach(error => { %>
                 <li class="text-yellow-500"><%= error.msg %> </li>
-               <% }}) %>
+               <% }) %>
         </ul>
     </div>
    <% } %>

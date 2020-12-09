@@ -40,7 +40,7 @@ console.log(req.params)
 }
 
 exports.create_get = (req, res)=>{
-    res.render('create-message')
+    res.render('create-message', {errors: undefined})
   }
 
 exports.post_validation = [
