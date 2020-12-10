@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
+const passport = require('passport');
 
 exports.user_get = (req, res) => {
     res.render("sign-up", {errors: undefined})
@@ -41,7 +42,9 @@ exports.signup_post = function(req, res, next){
                 if (err) {
                 return next(err)
                 };
-                res.redirect("/");
+                passport.authenticate('local')(req,res, ()=>{
+                  return res.redirect("/")
+                })
             });
             }
         });

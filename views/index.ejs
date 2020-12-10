@@ -25,7 +25,17 @@
                 <% if (currentUser && currentUser.membership) { %>
                  <p class="text-gray-400"><%= post.author.fullName %> </p>
                  <p class="text-gray-400"> <%=  post.date_posted %> </p>
-                <% }  else {%>
+                <% }  else if (currentUser && !currentUser.membership) {%>
+
+                    <p class="text-xs text-gray-500 mt-5">
+                        <a class="text-yellow-600" href="/join"> 
+                            Become a member
+                        </a>         
+                         to see who posted this message!
+                    </p>
+                        
+            
+                    <% }  else {%>
                     <p class="text-xs text-gray-500 mt-5">
                         <a class="text-yellow-600" href="/sign-up"> 
                             Sign Up
