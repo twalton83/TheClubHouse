@@ -24,7 +24,7 @@
                 <p><%= post.body %> </p>
                 <% if (currentUser && currentUser.membership) { %>
                  <p class="text-gray-400"><%= post.author.fullName %> </p>
-                 <p class="text-gray-400"> <%=  post.date_posted %> </p>
+                 <p class="text-gray-400"> <%=  post.time %> </p>
                 <% }  else if (currentUser && !currentUser.membership) {%>
 
                     <p class="text-xs text-gray-500 mt-5">
@@ -32,8 +32,7 @@
                             Become a member
                         </a>         
                          to see who posted this message!
-                    </p>
-                        
+                    </p>  
             
                     <% }  else {%>
                     <p class="text-xs text-gray-500 mt-5">
